@@ -45,7 +45,7 @@ def PreProcess(image):
                                       11,  # size of a pixel neighborhood used to calculate threshold value
                                       2)  # constant subtracted from the mean or weighted mean
 
-    cv2.imwrite(".\\tmpDump/orgImage.png", image)
+    cv2.imwrite(".\\tmpDump/orgImagessssss.png", image)
     cv2.imwrite(".\\tmpDump/grayImage.png", imgGray)
     cv2.imwrite(".\\tmpDump/blurredImage.png", imgBlurred)
     cv2.imwrite(".\\tmpDump/imgTresh.png", imgThresh)
