@@ -37,13 +37,19 @@ def PreProcess(image):
     imgGray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # get grayscale image
     imgBlurred = cv2.GaussianBlur(imgGray, (5, 5), 0)  # blur
 
-    # filter image from grayscale to black and white
-    imgThresh = cv2.adaptiveThreshold(imgBlurred,  # input image
-                                      255,  # make pixels that pass the threshold full white
-                                      cv2.ADAPTIVE_THRESH_GAUSSIAN_C, # use gaussian rather than mean, seems to give better results
-                                      cv2.THRESH_BINARY_INV, # invert so foreground will be white, background will be black
-                                      11,  # size of a pixel neighborhood used to calculate threshold value
-                                      2)  # constant subtracted from the mean or weighted mean
+    if image.mean() < 127:
+        #imgThresh = imgBlurred
+        test, imgThresh = cv2.threshold(imgBlurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+    else:
+        # filter image from grayscale to black and white
+        imgThresh = cv2.adaptiveThreshold(imgBlurred,  # input image
+                                            255,  # make pixels that pass the threshold full white
+                                            cv2.ADAPTIVE_THRESH_GAUSSIAN_C, # use gaussian rather than mean, seems to give better results
+                                            cv2.THRESH_BINARY_INV, # invert so foreground will be white, background will be black    THRESH_BINARY for black pictures
+                                            11,  # size of a pixel neighborhood used to calculate threshold value
+                                            2)  # constant subtracted from the mean or weighted mean
+
 
     cv2.imwrite(".\\tmpDump/orgImage.png", image)
     cv2.imwrite(".\\tmpDump/grayImage.png", imgGray)
@@ -97,7 +103,7 @@ def AnalyzeContours(contour, image, imgThresh):
                                             RESIZED_IMAGE_HEIGHT))  # resize image, this will be more consistent for recognition and storage
 
         # cv2.imwrite(".\\tmpDump/contourNormal" + str(contour.intRectX) + ".png", imgROI)
-        cv2.imwrite(".\\tmpDump/contourResized" + str(contour.intRectX) + ".png", imgROIResized)
+        # cv2.imwrite(".\\tmpDump/contourResized" + str(contour.intRectX) + ".png", imgROIResized)
 
         return imgROIResized
 
