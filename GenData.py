@@ -8,7 +8,7 @@ import ContourWithData as cwd
 import operator
 
 # module level variables ##########################################################################
-MIN_CONTOUR_AREA = 40  # was 25 @ 11/05/2017
+MIN_CONTOUR_AREA = 40
 
 RESIZED_IMAGE_WIDTH = 20
 RESIZED_IMAGE_HEIGHT = 30
