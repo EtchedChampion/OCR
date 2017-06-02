@@ -8,8 +8,6 @@ import ContourWithData as cwd
 import operator
 
 # module level variables ##########################################################################
-MIN_CONTOUR_AREA = 25
-
 RESIZED_IMAGE_WIDTH = 20
 RESIZED_IMAGE_HEIGHT = 30
 
@@ -28,8 +26,13 @@ def ListFolders(path):
     return r
 
 
-def CheckIfContourIsValid(self):  # this is oversimplified, for a production grade program
-    if self.fltArea < MIN_CONTOUR_AREA: return False  # much better validity checking would be necessary
+def CheckIfContourIsValid(self, image):  # this is oversimplified, for a production grade program
+    imgArea = image.size    # in other words, the same a two lines below (image.shape)
+    #imgWidth, imgHeight = image.shape[:2]
+    #imgArea = imgWidth * imgHeight
+    imgAreaThres = imgArea/100/6806     # 6806 = 83*82, 83 rows, 82 columns
+
+    if self.fltArea < imgAreaThres: return False  # much better validity checking would be necessary
     return True
 
 
@@ -79,7 +82,7 @@ def FindValidContours(image):
         allContoursWithData.append(contour)  # add contour with data object to list of all contours with data
 
     for contourWithData in allContoursWithData:  # for all contours
-        if CheckIfContourIsValid(contourWithData):  # check if valid
+        if CheckIfContourIsValid(contourWithData, imgThresh):  # check if valid
             validContoursWithData.append(contourWithData)  # if so, append to valid contour list
             # end if
     # end for
